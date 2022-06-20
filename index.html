@@ -21,7 +21,7 @@ const cities = [];
 
 fetch(endpoint)
   .then(blob => blob.json()) //returns a promise
-  .then(data => cities.push(...data)) 
+  .then(data => cities.push(...data));
 
 function findMatches(wordToMatch, cities) {
   const regex = new RegExp(wordToMatch, "gi");
@@ -29,6 +29,20 @@ function findMatches(wordToMatch, cities) {
     return place.city.match(regex) || place.state.match(regex);
   })
 }
+function displayMatches(){
+  const foundMatches = findMatches(this.value, cities);
+  suggestions.innerHTML = foundMatches.map(match => {
+    return `
+      <li>
+      <span class="name">${match.city}, ${match.state}</span>
+      <span class="population">${match.population}</span>
+      </li>`
+  }).join("")
+}
+
+const searchInput = document.querySelector(".search");
+const suggestions = document.querySelector(".suggestions");
+searchInput.addEventListener("input", displayMatches);
 
 </script>
 </body>
